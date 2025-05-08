@@ -4,11 +4,11 @@
 This repository contains a FastAPI-based web application that enables event management functionalities with a robust user management system using OAuth2 authentication. This submission focuses on improving API validation and test coverage.
 
 ## Issues Addressed
-- [Issue #1: Username Validation](https://github.com/YOUR_ORG/YOUR_REPO/issues/1) - Added comprehensive validation for username fields
-- [Issue #2: Password Security](https://github.com/YOUR_ORG/YOUR_REPO/issues/2) - Implemented strong password requirements
-- [Issue #3: Profile Field Edge Cases](https://github.com/YOUR_ORG/YOUR_REPO/issues/3) - Improved handling of edge cases in profile fields
-- [Issue #4: Email Test Failures](https://github.com/YOUR_ORG/YOUR_REPO/issues/4) - Fixed email service testing
-- [Issue #5: Test Coverage](https://github.com/YOUR_ORG/YOUR_REPO/issues/5) - Increased test coverage from 81% to 87%
+- [Issue #1: Username Validation](https://github.com/somana-13/Homework-10/issues/1) - Added comprehensive validation for username fields
+- [Issue #2: Password Security](https://github.com/somana-13/Homework-10/issues/4) - Implemented strong password requirements
+- [Issue #3: Profile Field Edge Cases](https://github.com/somana-13/Homework-10/issues/3) - Improved handling of edge cases in profile fields
+- [Issue #4: Email Test Failures](https://github.com/somana-13/Homework-10/issues/2) - Fixed email service testing
+- [Issue #5: Test Coverage](https://github.com/somana-13/Homework-10/issues/5) - Increased test coverage from 81% to 87%
 
 ## Docker Deployment
 The application has been deployed as a Docker image and is available on Dockerhub:
