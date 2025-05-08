@@ -15,7 +15,7 @@ Fixtures:
 
 # Standard library imports
 from builtins import range
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import patch
 from uuid import uuid4
 
@@ -35,7 +35,7 @@ from app.dependencies import get_db, get_settings
 from app.utils.security import hash_password
 from app.utils.template_manager import TemplateManager
 from app.services.email_service import EmailService
-from app.services.jwt_service import create_access_token
+from app.services.jwt_service import create_access_token, decode_token
 
 fake = Faker()
 
@@ -215,9 +215,10 @@ async def manager_user(db_session: AsyncSession):
 @pytest.fixture
 def user_base_data():
     return {
-        "username": "john_doe_123",
+        "nickname": "john_doe_123",
         "email": "john.doe@example.com",
-        "full_name": "John Doe",
+        "first_name": "John",
+        "last_name": "Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
         "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg"
     }
@@ -225,9 +226,10 @@ def user_base_data():
 @pytest.fixture
 def user_base_data_invalid():
     return {
-        "username": "john_doe_123",
+        "nickname": "john_doe_123",
         "email": "john.doe.example.com",
-        "full_name": "John Doe",
+        "first_name": "John",
+        "last_name": "Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
         "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg"
     }
@@ -241,7 +243,8 @@ def user_create_data(user_base_data):
 def user_update_data():
     return {
         "email": "john.doe.new@example.com",
-        "full_name": "John H. Doe",
+        "first_name": "John H.",
+        "last_name": "Doe",
         "bio": "I specialize in backend development with Python and Node.js.",
         "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg"
     }
@@ -249,9 +252,10 @@ def user_update_data():
 @pytest.fixture
 def user_response_data():
     return {
-        "id": "unique-id-string",
-        "username": "testuser",
+        "id": uuid4(),
+        "nickname": "testuser",
         "email": "test@example.com",
+        "role": UserRole.AUTHENTICATED,
         "last_login_at": datetime.now(),
         "created_at": datetime.now(),
         "updated_at": datetime.now(),
@@ -260,4 +264,31 @@ def user_response_data():
 
 @pytest.fixture
 def login_request_data():
-    return {"username": "john_doe_123", "password": "SecurePassword123!"}
+    return {"email": "john.doe@example.com", "password": "SecurePassword123!"}
+
+@pytest.fixture
+async def user_token(user):
+    # Create a JWT token for regular user
+    access_token = create_access_token(
+        data={"sub": user.email, "role": str(user.role.name)},
+        expires_delta=timedelta(minutes=30)
+    )
+    return access_token
+
+@pytest.fixture
+async def admin_token(admin_user):
+    # Create a JWT token for admin user
+    access_token = create_access_token(
+        data={"sub": admin_user.email, "role": str(admin_user.role.name)},
+        expires_delta=timedelta(minutes=30)
+    )
+    return access_token
+
+@pytest.fixture
+async def manager_token(manager_user):
+    # Create a JWT token for manager user
+    access_token = create_access_token(
+        data={"sub": manager_user.email, "role": str(manager_user.role.name)},
+        expires_delta=timedelta(minutes=30)
+    )
+    return access_token
